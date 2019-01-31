@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico">
+  <meta name="description" content="Community-driven ratings, reviews and info about UNSW courses.">
+  <meta property="og:title" content="SmartCourse Admin">
+  <meta property="og:description" content="Community-driven ratings, reviews and info about UNSW courses.">
+  <meta property="og:url" content="https://smartcourse.me">
+  <meta property="og:image" content="/logo.png">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>SmartCourse Admin</title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but SmartCourse Admin doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>
+
+  <div id="app">
+    <form>
+      <p>Admin Login: <span id="login-message"></span></p>
+      <p>email:<input type="text" id="email"></p>
+      <p>password: <input type="password" id="password"></p>
+      <button onClick="login();" type="button">Login</button>
+    </form>
+
+    <form>
+      <p>server: <input type="text" id="server" value="localhost:3000"> TLS<input type="checkbox" id="server-TLS"></p>
+      <p>frontend: <input type="text" id="frontend" value="localhost:8081"> TLS<input type="checkbox" id="frontend-TLS"></p>
+      <button onClick="getReports();" type="button">getReports</button>
+    </form>
+
+    <p>Reports:</p>
+    <div>
+      <table id="reports">
+        <tr>
+          <th><button onClick="deleteChecked();" type="button">Delete</button></th>
+          <th>reports</th>
+          <th>type</th>
+          <th>course</th>
+          <th>title</th>
+          <th>body</th>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <script defer async src="code.js"></script>
+</body
+
+</html>
