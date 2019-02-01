@@ -4,11 +4,12 @@ let token = ''
 let rows = []
 
 function login() {
-  const email = document.getElementById("email").value
-  const password = document.getElementById("password").value
-  firebaseLogin(email, password)
-    .then(()=>{ document.getElementById("login-message").innerHTML = "success" })
-    .catch((e)=>{ document.getElementById("login-message").innerHTML = e })
+  const email = document.getElementById('email').value
+  const password = document.getElementById('password').value
+  
+  return firebaseLogin(email, password)
+    .then(()=>{ document.getElementById('login-message').innerHTML = 'success' })
+    .catch((e)=>{ document.getElementById('login-message').innerHTML = e })
 }
 
 function firebaseLogin(email, password) {
@@ -16,9 +17,9 @@ function firebaseLogin(email, password) {
     {
         'credentials': 'omit',
         'headers': {},
-        'referrer': 'http://localhost:8080/login',
+        'referrer': 'https://admin.smartcourse.me',
         'referrerPolicy': 'no-referrer-when-downgrade',
-        'body': `{"email":"${email}","password":"${password}","returnSecureToken":true}`,
+        'body': `{'email':'${email}','password':'${password}','returnSecureToken':true}`,
         'method': 'POST',
         'mode': 'cors'
     })
@@ -48,16 +49,16 @@ function makeServerPath(code, parentType, questionID, reviewID, commentID) {
 
 function getReports() {
   // get server info from form
-  const sDomain = document.getElementById("server").value
-  const sProtocol = document.getElementById("server-TLS").checked === true ? 'https' : 'http'
+  const sDomain = document.getElementById('server').value
+  const sProtocol = document.getElementById('server-TLS').checked === true ? 'https' : 'http'
   const serverURI = `${sProtocol}://${sDomain}`
-  const fDomain = document.getElementById("frontend").value
-  const fProtocol = document.getElementById("frontend-TLS").checked === true ? 'https' : 'http'
+  const fDomain = document.getElementById('frontend').value
+  const fProtocol = document.getElementById('frontend-TLS').checked === true ? 'https' : 'http'
   const frontendURI = `${fProtocol}://${fDomain}`
 
   // get the reports and populate the table
-  fetchReports(serverURI).then((reports)=> {
-    const reportsNode = document.getElementById("reports")
+  fetchReports(serverURI).then((reports = [])=> {
+    const reportsNode = document.getElementById('reports')
 
     // clear rows first
     for (let i = 0; i < rows.length; ++i) {
@@ -70,12 +71,12 @@ function getReports() {
       const row = document.createElement('tr')
       row.id = `row-${i}`
 
-      row.innerHTML = `<td><input type="checkbox" id="delete-${i}"></td>
+      row.innerHTML = `<td><input type='checkbox' id='delete-${i}'></td>
         <td>${numReports}</td>
         <td>${parentType}</td>
         <td>${code}</td>
-        <td class="text-row"><a href="${linkToPost}" target="_blank">${title}</a></td>
-        <td class="text-row">${body}</td>`
+        <td class='text-row'><a href='${linkToPost}' target='_blank'>${title}</a></td>
+        <td class='text-row'>${body}</td>`
 
       reportsNode.appendChild(row)
 
