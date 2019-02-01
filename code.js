@@ -1,7 +1,7 @@
 // auth token
 let token = ''
-// api locations to all reported posts - for deleting and querying
-let apiLocations = []
+// rows in the table { row, apiLocation }
+let rows = []
 
 function login() {
   const email = document.getElementById("email").value
@@ -55,16 +55,22 @@ function getReports() {
   const fProtocol = document.getElementById("frontend-TLS").checked === true ? 'https' : 'http'
   const frontendURI = `${fProtocol}://${fDomain}`
 
-  // populate table
+  // get the reports and populate the table
   fetchReports(serverURI).then((reports)=> {
-
     const reportsNode = document.getElementById("reports")
+
+    // clear rows first
+    for (let i = 0; i < rows.length; ++i) {
+      reportsNode.removeChild(rows[i].row)
+    }
+    rows = []
 
     reports.forEach(({ numReports, code, parentType, questionID, reviewID, commentID, title, body }, i) => {
       const linkToPost = `${frontendURI}/${makeFrontendPath(code, parentType, questionID, reviewID, commentID)}`
       const row = document.createElement('tr')
+      row.id = `row-${i}`
 
-      row.innerHTML = `<td><input type="checkbox" id="row-${i}"></td>
+      row.innerHTML = `<td><input type="checkbox" id="delete-${i}"></td>
         <td>${numReports}</td>
         <td>${parentType}</td>
         <td>${code}</td>
@@ -74,7 +80,7 @@ function getReports() {
       reportsNode.appendChild(row)
 
       const apiLocation = `${serverURI}/${makeServerPath(code, parentType, questionID, reviewID, commentID)}`
-      apiLocations.push(apiLocation)
+      rows.push({ apiLocation, row })
     })
   })
 
@@ -94,27 +100,38 @@ function fetchReports(serverURI) {
 }
 
 function deleteChecked() {
+  // get all the uris
   locations = []
-  for (let i = 0; i < apiLocations.length; ++i) {
-    if (document.getElementById(`row-${i}`).checked) {
-      locations.push(apiLocations[i])
+  for (let i = 0; i < rows.length; ++i) {
+    if (document.getElementById(`delete-${i}`).checked) {
+      locations.push(rows[i].apiLocation)
     }
   }
+  // check if you really wanna delete them
   if (!confirm(`Delete ${locations.length} posts?`)) return;
+
   let succeeded = 0
   let failed = 0
-  Promise.all(locations.map(loc => fetch(loc, {
-    'headers': {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache'
-        },
-    'method': 'DELETE'
-  }))).then(responses => responses.map(result => {
-    if (result.ok) {
-      succeeded++
-    } else {
-      failed++
-    }
-  })).then(()=>alert(`${succeeded} succeeded, ${failed} failed`))
+  // do the delete
+  Promise.all(
+    locations.map(loc => fetch(loc, {
+      'headers': {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+          },
+      'method': 'DELETE'
+    })))
+  // count how many succeeded/failed
+  .then(responses => responses.map(result => {
+      if (result.ok) {
+        succeeded++
+      } else {
+        failed++
+      }
+    }))
+  // alert!
+  .then(()=> { alert(`${succeeded} succeeded, ${failed} failed`) })
+  // refresh table
+  .then(() => getReports())
 }
