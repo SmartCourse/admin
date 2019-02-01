@@ -40,7 +40,7 @@ function makeFrontendPath(code, parentType, questionID, reviewID, commentID) {
 function makeServerPath(code, parentType, questionID, reviewID, commentID) {
   const [ parentParentType, parentParentID ] = questionID ? [ 'question', questionID ] : [ 'review', reviewID ]
   if (parentType === 'comment') {
-    const commentType = questionID ? 'answer' : 'reply'
+    const commentType = questionID ? 'answer' : 'comment'
     return `api/course/${code}/${parentParentType}/${parentParentID}/${commentType}/${commentID}`
   }
   return `api/course/${code}/${parentParentType}/${parentParentID}`
