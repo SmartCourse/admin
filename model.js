@@ -11,7 +11,7 @@ class Model {
 
     get sDomain() { return this.$sDomain.value }
     get fDomain() { return this.$fDomain.value }
-    get sProtocol() { return this.$fProtocol.checked === true ? 'https' : 'http' }
+    get sProtocol() { return this.$sProtocol.checked === true ? 'https' : 'http' }
     get fProtocol() { return this.$fProtocol.checked === true ? 'https' : 'http' }
     get serverURI() { return `${this.sProtocol}://${this.sDomain}` }
     get frontendURI() { return `${this.fProtocol}://${this.fDomain}` }
