@@ -1,57 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="icon" href="/favicon.ico">
-  <meta name="description" content="Community-driven ratings, reviews and info about UNSW courses.">
+  <meta name="description" content="SmartCourse CMS">
   <meta property="og:title" content="SmartCourse Admin">
   <meta property="og:description" content="Community-driven ratings, reviews and info about UNSW courses.">
-  <meta property="og:url" content="https://smartcourse.me">
-  <meta property="og:image" content="/logo.png">
+  <meta property="og:url" content="https://admin.smartcourse.me">
   <link rel="stylesheet" type="text/css" href="style.css">
   <title>SmartCourse Admin</title>
 </head>
 
 <body>
   <noscript>
-    <strong>We're sorry but SmartCourse Admin doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    <strong>We're sorry but SmartCourse Admin doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
   </noscript>
-
+  <header>SmartCourse CMS</header>
   <div id="app">
-    <form>
-      <p>Admin Login: <span id="login-message"></span></p>
-      <p>email:<input type="text" id="email"></p>
-      <p>password: <input type="password" id="password"></p>
-      <button onClick="login();" type="button">Login</button>
-    </form>
-
-    <form>
-      <p>server: <input type="text" id="server" value="localhost:3000"> TLS<input type="checkbox" id="server-TLS"></p>
-      <p>frontend: <input type="text" id="frontend" value="localhost:8081"> TLS<input type="checkbox" id="frontend-TLS"></p>
-      <button onClick="getReports();" type="button">getReports</button>
-    </form>
-
-    <p>Reports:</p>
-    <div>
-      <table>
-        <tbody id="reports">
-          <tr>
-            <th><button onClick="deleteChecked();" type="button">Delete</button></th>
-            <th>reports</th>
-            <th>type</th>
-            <th>course</th>
-            <th>title</th>
-            <th>body</th>
-          </tr>
-        </tbody>
-      </table>
+    <div class="container">
+      <h3>Admin Login</h3>
+      <form>
+        <p><span id="login-message"></span></p>
+        <div class="login-row">
+          <label for="email">Email</label>
+          <input type="text" id="email">
+        </div>
+        <div class="login-row">
+          <label for="password">Password</label>
+          <input type="password" id="password">
+        </div>
+        <button id="login" type="button">Login</button>
+      </form>
     </div>
 
-  </div>
+    <div class="container hide">
+      <h3>Configuration</h3>
+      <form>
+        <div class="group">
+          <div class="sub-group">
+            <label for="server">Server</label>
+            <input type="text" id="server" value="localhost:3000">
+          </div>
+          <div class="sub-group">
+            <label for="server-TLS">TLS</label>
+            <input type="checkbox" id="server-TLS">
+          </div>
+        </div>
+        <div class="group">
+          <div class="sub-group">
+            <label for="frontend">Frontend</label>
+            <input type="text" id="frontend" value="localhost:8081">
+          </div>
+          <div class="sub-group">
+            <label for="frontend-TLS">TLS</label>
+            <input type="checkbox" id="frontend-TLS">
+          </div>
+        </div>
+        <button data-button="get" type="button">getReports</button>
+      </form>
+    </div>
 
-  <script defer async src="code.js"></script>
-</body
+    <div class="container hide">
+      <h3>Reports</h3>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th><button data-button="delete" type="button">Delete</button></th>
+              <th>Reports</th>
+              <th>Type</th>
+              <th>Title</th>
+              <th>Body</th>
+            </tr>
+          </thead>
+          <tbody id="reports">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+  </div>
+  <script src="auth.js" type="module"></script>
+  <script src="utils.js" type="module"></script>
+  <script type="module" defer src="main.js"></script>
+</body>
 
 </html>
